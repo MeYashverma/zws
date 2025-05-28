@@ -1,10 +1,11 @@
 {
-    "name": "zws-middleware",
+    "name": "zws",
     "version": "1.0.0",
-    "dependencies": {
-        "node-fetch": "^2.6.1"
+    "main": "api/make-zws.js",
+    "scripts": {
+        "dev": "vercel dev"
     },
-    "engines": {
-        "node": "18.x"
+    "dependencies": {
+        "axios": "^1.6.7"
     }
 }

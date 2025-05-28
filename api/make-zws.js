@@ -1,33 +1,26 @@
-
-const fetch = require('node-fetch');
-
-module.exports = async (req, res) => {
+// api/make-zws.js
+const axios = require('axios');
+ 
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ error: 'Only POST method allowed' });
   }
-
+ 
   const { original_url } = req.body;
-
   if (!original_url) {
-    return res.status(400).json({ error: 'Missing original_url' });
+    return res.status(400).json({ error: 'original_url is required' });
   }
-
+ 
   try {
-    const response = await fetch('https://api.zws.im/shorten', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: original_url }),
-    });
-
-    const data = await response.json();
-
-    if (!data.url) {
-      return res.status(500).json({ error: 'Shortening failed', detail: data });
-    }
-
-    return res.status(200).json({ short_url: data.url });
-  } catch (err) {
-    console.error('Shorten failed:', err);
-    return res.status(500).json({ error: 'Server error', message: err.message });
+const response = await axios.post(
+'https://api.zws.im/shorten',
+      { url: original_url },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+ 
+    return res.status(200).json({ short_url: response.data.url });
+  } catch (error) {
+    console.error('Error:', error?.response?.data || error.message);
+    return res.status(500).json({ error: 'Failed to shorten URL' });
   }
-};
+}

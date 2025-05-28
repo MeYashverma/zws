@@ -1,3 +1,15 @@
 {
-    "version": 2
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/make-zws.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "api/make-zws.js",
+            "dest": "api/make-zws.js"
+        }
+    ]
 }
